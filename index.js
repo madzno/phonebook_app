@@ -61,6 +61,16 @@ app.delete('/api/persons/:id', (request, response, next) => {
     }).catch(error => next(error))
 })
 
+app.get('/info', (request, response) => {
+  Person.find({}).then(persons => {
+    let numberOfPersons = persons.length;
+    let currentTime = new Date();
+    response.send(`<p>Phonebook has info for ${numberOfPersons} people</p>
+    <p>${currentTime}</p>`)
+  })
+})
+
+
 // let persons = [
 //   {
 //     "id": 1,
@@ -83,13 +93,6 @@ app.delete('/api/persons/:id', (request, response, next) => {
 //     "number": "39-23-6423122"
 //   }
 // ];
-
-// app.get('/info', (request, response) => {
-//   let numberOfPersons = persons.length;
-//   let currentTime = new Date();
-//   response.send(`<p>Phonebook has info for ${numberOfPersons} people</p>
-//   <p>${currentTime}</p>`)
-// })
 
 // app.get('/api/persons/:id', (request, response) => {
 //   let id = Number(request.params.id);
