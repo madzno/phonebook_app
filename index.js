@@ -39,10 +39,6 @@ app.post('/api/persons', (request, response) => {
     return response.status(400).json({ error: 'number missing' });
   }
 
-  // else if (nameNotUnique(body.name)) {
-  //   return response.status(400).json({ error: 'must use unique name' });
-  // }
-
   let newPerson = new Person({
     name: body.name,
     number: body.number,
@@ -80,10 +76,19 @@ app.get('/api/persons/:id', (request, response, next) => {
   }).catch(error => next(error))
 })
 
-// const nameNotUnique = (providedName) => {
-//   let names = persons.map(person => person.name);
-//   return names.includes(providedName);
-// }
+app.put('/api/persons/:id', (request, response, next) => {
+  let body = request.body;
+
+  let person = {
+    name: body.name,
+    number: body.number,
+  }
+
+  Person.findByIdAndUpdate(request.params.id, person, { new: true })
+    .then(updatedPerson => {
+      response.json(updatedPerson)
+    }).catch(error => next(error))
+})
 
 app.use(unknownEndpoint)
 app.use(errorHandler)
