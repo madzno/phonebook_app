@@ -1,14 +1,14 @@
 require('dotenv').config()
-const express = require('express');
-const app = express();
-const morgan = require('morgan');
-const cors = require('cors');
+const express = require('express')
+const app = express()
+const morgan = require('morgan')
+const cors = require('cors')
 const Person = require('./models/person')
 
-app.use(cors());
-app.use(express.static('build'));
-app.use(express.json());
-app.use(morgan('tiny'));
+app.use(cors())
+app.use(express.static('build'))
+app.use(express.json())
+app.use(morgan('tiny'))
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
@@ -33,7 +33,7 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.post('/api/persons', (request, response, next) => {
-  let body = request.body;
+  let body = request.body
 
   let newPerson = new Person({
     name: body.name,
@@ -41,22 +41,22 @@ app.post('/api/persons', (request, response, next) => {
   })
 
   newPerson.save().then(savedPerson => {
-    response.json(savedPerson);
+    response.json(savedPerson)
   }).catch(error => next(error))
 
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     }).catch(error => next(error))
 })
 
 app.get('/info', (request, response) => {
   Person.find({}).then(persons => {
-    let numberOfPersons = persons.length;
-    let currentTime = new Date();
+    let numberOfPersons = persons.length
+    let currentTime = new Date()
     response.send(`<p>Phonebook has info for ${numberOfPersons} people</p>
     <p>${currentTime}</p>`)
   })
@@ -73,7 +73,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
-  let body = request.body;
+  let body = request.body
 
   let person = {
     name: body.name,
